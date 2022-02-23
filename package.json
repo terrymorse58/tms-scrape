@@ -1,0 +1,20 @@
+{
+  "name": "tms-scrape",
+  "version": "0.0.1",
+  "description": "scrape a single dynamic web page",
+  "main": "scrapeit.js",
+  "type": "module",
+  "bin": {
+    "scrape": "./scrapeit.js"
+  },
+  "scripts": {
+    "scrapeit": "./scrapeit.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Terry Morse",
+  "license": "MIT",
+  "dependencies": {
+    "website-scraper": "^5.0.0",
+    "website-scraper-puppeteer": "^1.0.0"
+  }
+}
