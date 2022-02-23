@@ -1,7 +1,7 @@
 {
   "name": "tms-scrape",
   "version": "0.0.1",
-  "description": "scrape a single dynamic web page",
+  "description": "scrape a single dynamic web page with node or from command line",
   "main": "scrapeit.js",
   "type": "module",
   "bin": {
@@ -13,6 +13,10 @@
   },
   "author": "Terry Morse",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terrymorse58/tms-scrape"
+  },
   "dependencies": {
     "website-scraper": "^5.0.0",
     "website-scraper-puppeteer": "^1.0.0"
