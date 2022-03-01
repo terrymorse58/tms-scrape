@@ -4,7 +4,7 @@
 // Usage: scrapeit url [destination_directory] [--headless]
 
 const DEFAULT_DEST = './sites',
-  DEFAULT_TIMEOUT = 60_000,
+  DEFAULT_TIMEOUT = 300_000,
   DEFAULT_HEADLESS = false;
 
 import { doScrape } from './doscrape.js';
