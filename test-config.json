@@ -1,0 +1,8 @@
+{
+  "urls": [
+    "https://terrymorse.com"
+  ],
+  "directory": "test",
+  "dynamic": false,
+  "puppeteerConfig": {}
+}

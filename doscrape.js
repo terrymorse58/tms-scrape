@@ -1,29 +1,16 @@
 // scrape a single URL and store results locally
 
 import scrape from 'website-scraper';
-import PuppeteerPlugin from 'website-scraper-puppeteer';
 import { existsSync, rmdirSync } from 'fs';
 
 /**
  * scrape a single page
- * @param {String} url
- * @param {String} destRoot
- * @param {Boolean} [headless]
+ * @param {Object} options
  * @return {Promise<{directory: string}>}
  */
-function doScrape (url, destRoot, {headless= false}) {
+function doScrape (options) {
 
-  const urls = [url];
-  let directory = destRoot + '/' +
-    url.replace(/^http(.*):\/\//, '');
-
-  // strip html file from directory, if it exists
-  if (directory.endsWith('.html')) {
-    const dirSegments = directory.split('/');
-    dirSegments.pop();
-    directory = dirSegments.join('/');
-  }
-  // console.log(`saving to directory: ${directory}`);
+  const {directory} = options;
 
   return new Promise(resolve => resolve())
 
@@ -40,17 +27,7 @@ function doScrape (url, destRoot, {headless= false}) {
 
     .then(() => {
 
-      return scrape({
-        urls,
-        directory,
-        plugins: [
-          new PuppeteerPlugin({
-            launchOptions: {headless}, /* optional */
-            scrollToBottom: {timeout: 10_000, viewportN: 10}, /* optional */
-            blockNavigation: true, /* optional */
-          })
-        ]
-      });
+      return scrape(options);
     })
 
     .then(() => {

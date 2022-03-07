@@ -1,15 +1,15 @@
 {
   "name": "tms-scrape",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "scrape a single dynamic web page with node or from command line",
-  "main": "scrapeit.js",
+  "main": "index.js",
   "type": "module",
   "bin": {
-    "scrape": "./scrapeit.js"
+    "scrape": "./index.js"
   },
   "scripts": {
-    "scrapeit": "./scrapeit.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "scrape": "./index.js",
+    "test": "./index.js --config test-config.json"
   },
   "author": "Terry Morse",
   "license": "MIT",
