@@ -28,7 +28,7 @@ let config = {
 
   // where to store files
   subdirectories: [
-    {directory: 'img', extensions: ['.jpg', '.png', '.svg']},
+    {directory: 'img', extensions: ['.jpg', '.jpeg', '.png', '.svg']},
     {directory: 'css', extensions: ['.css']},
     {directory: 'font', extensions: ['.woff', '.ttf']}
   ],
