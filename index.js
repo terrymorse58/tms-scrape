@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // scrape a single page
-// Usage: scrape --config <config_file> --url<source_url> --dest <destination_directory>
+// Usage: scrape --url<source_url> --dest <destination_directory> [--config <config_file>]
 
 import PuppeteerPlugin from 'website-scraper-puppeteer';
 import { readFileSync } from 'fs';
@@ -30,10 +30,10 @@ let config = {
   subdirectories: [
     {directory: 'img', extensions: ['.jpg', '.jpeg', '.png', '.svg']},
     {directory: 'css', extensions: ['.css']},
-    {directory: 'font', extensions: ['.woff', '.ttf']}
+    {directory: 'font', extensions: ['.woff', '.ttf', '.woff2']}
   ],
 
-  // how deep in hierarchy to search (1: only files linked from source file)
+  // how deep in hierarchy to search (1: files referenced by source file)
   maxDepth: 1,
 
   // default name for source file
@@ -42,7 +42,7 @@ let config = {
   // keep going if there are errors
   ignoreErrors: true,
 
-  // use puppeteer for dynamic pages
+  // dynamic: parse dynamic pages using puppeteer
   dynamic: false,
   puppeteerConfig: {
     launchOptions: {headless: DEFAULT_HEADLESS}, // optional
@@ -55,12 +55,6 @@ let config = {
 
 
 // console.log(`scrapeit argv:`, process.argv);
-
-if (process.argv.length < 3) {
-  console.error('Usage: scrape --config <config_file> --url' +
-    ' <source_url> --dest <destination_directory>');
-  process.exit(0);
-}
 
 const args = process.argv.slice(2);
 
@@ -82,6 +76,15 @@ const iFlagDest = args.indexOf('--dest');
 if (iFlagDest !== -1) {
   config.directory = args[iFlagDest + 1];
 }
+
+if (!config.urls.length || !config.directory) {
+  console.error('Usage: scrape ' +
+    '--url <source_url> ' +
+    '--dest <destination_directory> ' +
+    '[--config <config_file>]');
+  process.exit(0);
+}
+
 
 if (config.dynamic) {
   const plugin = new PuppeteerPlugin(config.puppeteerConfig);
