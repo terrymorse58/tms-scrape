@@ -61,8 +61,12 @@ function insertURLInfo (document, info) {
 function elementsWithRelativeRefs (document, attrName) {
   return [...document.querySelectorAll(`[${attrName}]`)]
     .filter(el => {
-      return !(el[attrName].startsWith('http') ||
-        el[attrName].startsWith('//'));
+      return !(
+        el[attrName].startsWith('http') ||
+        el[attrName].startsWith('//') ||
+        el[attrName].startsWith('data:') ||
+        el[attrName].length === 0
+      );
     });
 }
 
@@ -79,11 +83,12 @@ function relativeRefsToAbsolute (document, info) {
     segments.pop();
   }
   path = segments.join('/');
+  if (!path.endsWith('/')) { path = path + '/'; }
 
   // elements with relative src attributes
   const srcEls = elementsWithRelativeRefs(document, 'src');
   srcEls.forEach(el => {
-    el.src = new URL(el.src, info.origin).href;
+    el.src = new URL(el.src, info.origin + path).href;
   });
 
   // elements with relative href attributes
@@ -122,7 +127,7 @@ function doScrape (options) {
     })
 
     .then(() => {
-      // add <meta name="domainName" content="..."> to <head>
+      // add URL info to <head>
       const url = urls[0],
         urlInfo = getURLInfo(url),
         document = readHtmlFile(htmlPath);
@@ -130,7 +135,9 @@ function doScrape (options) {
       insertURLInfo(document, urlInfo);
 
       // convert relative references to absolute
-      relativeRefsToAbsolute(document, urlInfo);
+      if (options.convertRelativeRefs) {
+        relativeRefsToAbsolute(document, urlInfo);
+      }
 
       return document;
     })

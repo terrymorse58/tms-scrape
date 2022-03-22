@@ -6,53 +6,11 @@
 import PuppeteerPlugin from 'website-scraper-puppeteer';
 import { readFileSync } from 'fs';
 import { doScrape } from './doscrape.js';
+import { defaultConfig } from './config-default.js';
 
+const DEFAULT_TIMEOUT = 300_000;
 
-const DEFAULT_DEST = './site',
-  DEFAULT_TIMEOUT = 300_000,
-  DEFAULT_HEADLESS = false;
-
-let config = {
-
-  // urls to scrape
-  urls: [],
-
-  // destination directory
-  directory: DEFAULT_DEST,
-
-  // types of files to save
-  sources: [
-    // {selector: 'img', attr: 'src'},
-    // {selector: 'link[rel="stylesheet"]', attr: 'href'}
-  ],
-
-  // where to store files
-  subdirectories: [
-    // {directory: 'img', extensions: ['.jpg', '.jpeg', '.png', '.svg']},
-    // {directory: 'css', extensions: ['.css']},
-    // {directory: 'font', extensions: ['.woff', '.ttf', '.woff2']}
-  ],
-
-  // how deep in hierarchy to search (1: files referenced by source file)
-  maxDepth: 1,
-
-  // default name for source file
-  defaultFilename: 'index.html',
-
-  // keep going if there are errors
-  ignoreErrors: true,
-
-  // dynamic: parse dynamic pages using puppeteer
-  dynamic: false,
-  puppeteerConfig: {
-    launchOptions: {headless: DEFAULT_HEADLESS}, // optional
-     scrollToBottom: {timeout: DEFAULT_TIMEOUT, viewportN: 10}, // optional
-    blockNavigation: true, // optional
-    browser: null,
-    headers: {}
-  }
-};
-
+let config = Object.assign({}, defaultConfig);
 
 // console.log(`scrapeit argv:`, process.argv);
 
@@ -85,14 +43,13 @@ if (!config.urls.length || !config.directory) {
   process.exit(0);
 }
 
-
 if (config.dynamic) {
   const plugin = new PuppeteerPlugin(config.puppeteerConfig);
   config.plugins = [plugin];
 }
 
 process.stdout.write(
-`  source: ${config.urls}
+  `  source: ${config.urls}
   destination: ${config.directory}\n`
 );
 

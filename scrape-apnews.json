@@ -1,0 +1,10 @@
+{
+  "dynamic": true,
+  "puppeteerConfig": {
+    "launchOptions": {"headless": false},
+    "scrollToBottom": {"timeout": 30000, "viewportN": 5},
+    "blockNavigation": true,
+    "browser": null,
+    "headers": {}
+  }
+}
