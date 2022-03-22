@@ -22,15 +22,15 @@ let config = {
 
   // types of files to save
   sources: [
-    {selector: 'img', attr: 'src'},
-    {selector: 'link[rel="stylesheet"]', attr: 'href'}
+    // {selector: 'img', attr: 'src'},
+    // {selector: 'link[rel="stylesheet"]', attr: 'href'}
   ],
 
   // where to store files
   subdirectories: [
-    {directory: 'img', extensions: ['.jpg', '.jpeg', '.png', '.svg']},
-    {directory: 'css', extensions: ['.css']},
-    {directory: 'font', extensions: ['.woff', '.ttf', '.woff2']}
+    // {directory: 'img', extensions: ['.jpg', '.jpeg', '.png', '.svg']},
+    // {directory: 'css', extensions: ['.css']},
+    // {directory: 'font', extensions: ['.woff', '.ttf', '.woff2']}
   ],
 
   // how deep in hierarchy to search (1: files referenced by source file)
@@ -95,8 +95,6 @@ process.stdout.write(
 `  source: ${config.urls}
   destination: ${config.directory}\n`
 );
-
-// process.exit(0);
 
 const startTime = Date.now();
 

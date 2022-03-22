@@ -14,40 +14,25 @@ npm install [-g] tms-scrape
 ```shell
 npm run test
 ```
-Which scrapes [terrymorse.com home page](https://terrymorse.com) and produces the following files:
+Which scrapes [terrymorse.com home page](https://terrymorse.com) and produces the following file:
 ```text
-├── test
-│   ├── css
-│   │   ├── bootsdark.min.css
-│   │   ├── bootstrap.min.css
-│   │   └── css.css
-│   ├── img
-│   │   ├── 3744522.png
-│   │   ├── abstract-business-code-270348.jpg
-│   │   ├── myelevation-iphone-mockup.png
-│   │   ├── simple-sender-screenshot.png
-│   │   ├── tms-logo-red-transparent.png
-│   │   ├── whereami-screenshot-700x1300.png
-│   │   └── williams-sonoma-challenge-screenshot.png
-│   └── index.html
-
+test
+└── index.html
 ```
 
 ## Usage
 
 ```shell
-scrape --config <config_file> --url<source_url> --dest <destination_directory>
+scrape --url <source_url>  [--config <config_file> --dest <directory>]
 ```
 
 Where:
 
-`config_file` - configuration file (JSON)
+- `source_url` - url of the page to scrape (overrides `config_file` value)
+- `config_file` - configuration file (JSON)
+- `directory` - directory to contain results of scrape (overrides `config_file` value)
 
-`source_url` - url of the page to scrape (overrides `config_file` value)
-
-`destination_directory` - directory to contain results of scrape (overrides `config_file` value)
-
-The `source_url` and `destination_directory` are required, specified either in the config file:
+The `source_url` is required, specified either in the config file:
 
 ```json
 {
@@ -64,7 +49,7 @@ or on the command line.
 A default scraping does the following:
 
 - evaluates static page
-- saves only html, images, and css
+- saves only html
 - will not follow links
 
 See the following for config file property details:
@@ -76,39 +61,8 @@ See the following for config file property details:
 {
   "urls": [],
   "directory": "./site",
-  "sources": [
-    {
-      "selector": "img",
-      "attr": "src"
-    },
-    {
-      "selector": "link[rel=\"stylesheet\"]",
-      "attr": "href"
-    }
-  ],
-  "subdirectories": [
-    {
-      "directory": "img",
-      "extensions": [
-        ".jpg",
-        ".png",
-        ".svg"
-      ]
-    },
-    {
-      "directory": "css",
-      "extensions": [
-        ".css"
-      ]
-    },
-    {
-      "directory": "font",
-      "extensions": [
-        ".woff",
-        ".ttf"
-      ]
-    }
-  ],
+  "sources": [],
+  "subdirectories": [],
   "maxDepth": 1,
   "defaultFilename": "index.html",
   "ignoreErrors": true,

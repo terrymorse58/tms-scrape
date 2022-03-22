@@ -9,7 +9,8 @@
   },
   "scripts": {
     "scrape": "./index.js",
-    "test": "./index.js --config test-config.json"
+    "test1": "./index.js --url https://terrymorse.com/packages/index.html --config test-config.json --dest test1",
+    "test2": "./index.js --url https://www.iana.org/domains/reserved --dest test2"
   },
   "author": "Terry Morse",
   "license": "MIT",
@@ -18,6 +19,7 @@
     "url": "https://github.com/terrymorse58/tms-scrape"
   },
   "dependencies": {
+    "jsdom": "^19.0.0",
     "website-scraper": "^5.0.0",
     "website-scraper-puppeteer": "^1.0.0"
   }
