@@ -27,7 +27,13 @@ if (iFlagConfig !== -1) {
   const configPath = args[iFlagConfig + 1];
   const configJSON = readFileSync(configPath, {encoding: 'utf8'});
   const confUser = JSON.parse(configJSON);
-  config = Object.assign(config, confUser.scrapeConfig);
+  const {scrapeConfig} = confUser;
+  if (!scrapeConfig) {
+    console.error(`Error: Config file '${configPath}'` +
+      ` is missing required 'scrapeConfig' parameter.`);
+    process.exit(0);
+  }
+  config = Object.assign(config, scrapeConfig);
 }
 
 const iFlagUrl = args.indexOf('--url');
