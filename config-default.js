@@ -1,9 +1,5 @@
 // tms-scrape default configuration
 
-const DEFAULT_DEST = './scrape-result',
-  DEFAULT_SCROLL_TIMEOUT = 30_000,
-  DEFAULT_HEADLESS = false;
-
 const defaultConfig = {
 
   // urls to scrape

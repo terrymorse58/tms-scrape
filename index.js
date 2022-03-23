@@ -1,7 +1,13 @@
 #!/usr/bin/env node
 
-// scrape a single page
-// Usage: scrape --url<source_url> --dest <destination_directory> [--config <config_file>]
+/**
+ * scrape a single page from the command line
+ *
+ * Usage:
+ *
+ * scrape --url<source_url> --dest <destination_directory>
+ *   [--config <config_file>]
+ */
 
 import PuppeteerPlugin from 'website-scraper-puppeteer';
 import { readFileSync } from 'fs';
@@ -21,7 +27,7 @@ if (iFlagConfig !== -1) {
   const configPath = args[iFlagConfig + 1];
   const configJSON = readFileSync(configPath, {encoding: 'utf8'});
   const confUser = JSON.parse(configJSON);
-  config = Object.assign(config, confUser);
+  config = Object.assign(config, confUser.scrapeConfig);
 }
 
 const iFlagUrl = args.indexOf('--url');
