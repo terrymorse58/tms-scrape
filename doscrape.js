@@ -1,7 +1,7 @@
 // scrape a single URL and store results locally
 
 import scrape from 'website-scraper';
-import { existsSync, rmdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, rmSync, readFileSync, writeFileSync } from 'fs';
 import { JSDOM } from 'jsdom';
 
 /**
@@ -116,7 +116,7 @@ function doScrape (options) {
       if (!existsSync(directory)) { return; }
 
       // console.log(`deleting existing directory: ${directory}`);
-      return rmdirSync(directory, {
+      return rmSync(directory, {
         maxRetries: 5,
         recursive: true
       });
