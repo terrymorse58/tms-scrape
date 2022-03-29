@@ -99,6 +99,17 @@ function relativeRefsToAbsolute (document, info) {
 }
 
 /**
+ * remove all scripts from document
+ * @param {HTMLDocument} document
+ */
+function removeAllScripts (document) {
+  const scripts = [...document.querySelectorAll('script')];
+  scripts.forEach(script => {
+    script.remove();
+  });
+}
+
+/**
  * scrape a single page
  * @param {Object} options
  * @return {Promise<{directory: string}>}
@@ -133,6 +144,11 @@ function doScrape (options) {
         document = readHtmlFile(htmlPath);
 
       insertURLInfo(document, urlInfo);
+
+      // remove all scripts
+      if (options.removeScripts) {
+        removeAllScripts(document);
+      }
 
       // convert relative references to absolute
       if (options.convertRelativeRefs) {

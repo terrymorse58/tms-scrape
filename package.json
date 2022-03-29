@@ -1,7 +1,7 @@
 {
   "name": "tms-scrape",
-  "version": "0.3.1",
-  "description": "scrape a single dynamic web page with node or from command line",
+  "version": "0.4.0",
+  "description": "scrape a single dynamic web page with JavaScript or from command line",
   "main": "index.js",
   "type": "module",
   "bin": {

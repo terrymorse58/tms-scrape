@@ -51,6 +51,8 @@ A default scraping does the following:
 - evaluates static page
 - saves only html
 - will not follow links
+- removes all scripts from HTML file
+- converts all relative URLs to absolute
 
 See the following for config file property details:
 
@@ -64,6 +66,8 @@ See the following for config file property details:
   "sources": [],
   "subdirectories": [],
   "maxDepth": 1,
+  "removeScripts": true,
+  "convertRelativeRefs": true,
   "defaultFilename": "index.html",
   "ignoreErrors": true,
   "dynamic": false,
@@ -81,4 +85,4 @@ See the following for config file property details:
   }
 }
 ```
-A config file specified on the command line may contain any of these properties. Any property missing from the config file will use the default, above.
+A config file specified on the command line may contain any of these properties. Any property missing from the config file will use the default (above).

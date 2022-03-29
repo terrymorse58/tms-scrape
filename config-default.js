@@ -24,6 +24,9 @@ const defaultConfig = {
   // how deep in hierarchy to search (1: files referenced by source file)
   "maxDepth": 1,
 
+  // remove all scripts from HTML file
+  "removeScripts": true,
+
   // convert relative refs to absolute
   "convertRelativeRefs": true,
 
