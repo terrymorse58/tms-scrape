@@ -155,18 +155,26 @@ function doScrape (options) {
         relativeRefsToAbsolute(document, urlInfo);
       }
 
+      // delete HTML file if requested
+      if (!options.saveToFile) {
+        rmSync(htmlPath, {
+          force: true,
+          maxRetries: 4
+        })
+      }
+
       return document;
     })
 
     .then(document => {
-      // write HTML document to file
-      if (!options.saveToFile) { return document; }
-
-      writeFileSync(
-        htmlPath,
-        document.documentElement.outerHTML,
-        {encoding: 'utf8'}
-      );
+      // write modified HTML document to file
+      if (options.saveToFile) {
+        writeFileSync(
+          htmlPath,
+          document.documentElement.outerHTML,
+          {encoding: 'utf8'}
+        );
+      }
       return document;
     })
 
