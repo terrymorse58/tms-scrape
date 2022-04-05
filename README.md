@@ -68,6 +68,7 @@ See the following for config file property details:
   "maxDepth": 1,
   "removeScripts": true,
   "convertRelativeRefs": true,
+  "saveToFile": true,
   "defaultFilename": "index.html",
   "ignoreErrors": true,
   "dynamic": false,

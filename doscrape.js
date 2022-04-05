@@ -159,6 +159,9 @@ function doScrape (options) {
     })
 
     .then(document => {
+      // write HTML document to file
+      if (!options.saveToFile) { return document; }
+
       writeFileSync(
         htmlPath,
         document.documentElement.outerHTML,

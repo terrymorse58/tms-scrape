@@ -30,6 +30,9 @@ const defaultConfig = {
   // convert relative refs to absolute
   "convertRelativeRefs": true,
 
+  // save html to file
+  "saveToFile": true,
+
   // name for source file
   "defaultFilename": 'index.html',
 
