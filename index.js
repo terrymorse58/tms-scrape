@@ -79,7 +79,7 @@ const timeoutID = setTimeout(() => {
 }, DEFAULT_TIMEOUT);
 
 doScrape(config)
-  .then(({directory}) => {
+  .then(({directory, html}) => {
     clearInterval(spinner);
     clearTimeout(timeoutID);
     process.stdout.write(`\nscrape completed, results stored at '${directory}'\n`);

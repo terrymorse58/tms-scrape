@@ -112,7 +112,7 @@ function removeAllScripts (document) {
 /**
  * scrape a single page
  * @param {Object} options
- * @return {Promise<{directory: string}>} directory containing index.html
+ * @return {Promise<{directory: string, html: string}>}
  */
 function doScrape (options) {
 
@@ -159,16 +159,18 @@ function doScrape (options) {
     })
 
     .then(document => {
-      return writeFileSync(
+      writeFileSync(
         htmlPath,
         document.documentElement.outerHTML,
         {encoding: 'utf8'}
       );
+      return document;
     })
 
-    .then(() => {
+    .then(document => {
       return {
-        directory
+        directory,
+        html: document.documentElement.outerHTML
       };
     });
 

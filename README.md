@@ -94,8 +94,8 @@ import { doScrape } from 'tms-scrape';
 /**
  * scrape a single page
  * @param {Object} options
- * @return {Promise<{directory: string}>} directory containing index.html
+ * @return {Promise<{directory: string, html: string}>}
  */
 
-const indexDir = doScrape (config);
+const {directory, html} = doScrape (options);
 ```
