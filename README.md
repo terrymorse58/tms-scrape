@@ -86,3 +86,16 @@ See the following for config file property details:
 }
 ```
 A config file specified on the command line may contain any of these properties. Any property missing from the config file will use the default (above).
+
+## API
+
+```javascript
+import { doScrape } from 'tms-scrape';
+/**
+ * scrape a single page
+ * @param {Object} options
+ * @return {Promise<{directory: string}>} directory containing index.html
+ */
+
+const indexDir = doScrape (config);
+```

@@ -112,7 +112,7 @@ function removeAllScripts (document) {
 /**
  * scrape a single page
  * @param {Object} options
- * @return {Promise<{directory: string}>}
+ * @return {Promise<{directory: string}>} directory containing index.html
  */
 function doScrape (options) {
 
