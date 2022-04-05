@@ -155,10 +155,11 @@ function doScrape (options) {
         relativeRefsToAbsolute(document, urlInfo);
       }
 
-      // delete HTML file if requested
+      // delete destination directory if requested
       if (!options.saveToFile) {
-        rmSync(htmlPath, {
+        rmSync(directory, {
           force: true,
+          recursive: true,
           maxRetries: 4
         })
       }
