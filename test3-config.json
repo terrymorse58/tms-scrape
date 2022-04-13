@@ -1,0 +1,16 @@
+{
+  "scrapeConfig": {
+    "sources": [],
+    "subdirectories": [],
+    "maxDepth": 0,
+    "ignoreErrors": true,
+    "dynamic": false,
+    "puppeteerConfig": {
+      "launchOptions": {"headless": false},
+      "scrollToBottom": {"timeout": 60000, "viewportN": 10},
+      "blockNavigation": true,
+      "browser": null,
+      "headers": {}
+    }
+  }
+}

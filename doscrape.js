@@ -62,10 +62,11 @@ function elementsWithRelativeRefs (document, attrName) {
   return [...document.querySelectorAll(`[${attrName}]`)]
     .filter(el => {
       return !(
+        !el[attrName] ||
+        el[attrName].length === 0 ||
         el[attrName].startsWith('http') ||
         el[attrName].startsWith('//') ||
-        el[attrName].startsWith('data:') ||
-        el[attrName].length === 0
+        el[attrName].startsWith('data:')
       );
     });
 }
