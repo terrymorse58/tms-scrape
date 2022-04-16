@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
  * @param {Object} options
  @returns {Promise<any>} */
 function axiosScrape (options) {
-  // console.log(`axiosScrape()`);
+  console.log(`axiosScrape()`);
 
   const [urlStr] = options.urls;
   const {directory, defaultFileName} = options;
@@ -25,14 +25,17 @@ function axiosScrape (options) {
     .then(res => {
       const {data, status, statusText} = res;
       const elaspedTime = ((Date.now() - startTime) / 1000).toFixed(2);
-      // console.log(`  axiosScrape status: ${status}, statusText: ${statusText}`);
-      // console.log(`    data.length: ${data.length}`);
-      // console.log(`  axiosScrape complete in ${elaspedTime} secs`);
+
+      console.log(`  axiosScrape status: ${status}, statusText: ${statusText}`);
+      console.log(`    data.length: ${data.length}`);
+      console.log(`  axiosScrape complete in ${elaspedTime} secs`);
 
       const mdResult = mkdirSync(directory, {
         recursive: true,
         mode: 0o755
       });
+
+      console.log(`  axiosScrape mdResult: ${mdResult}`);
 
       writeFileSync(writePath, data, {encoding: 'utf8'});
     })
