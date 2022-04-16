@@ -1,0 +1,9 @@
+{
+  "scrapeConfig": {
+    "directory": "test",
+    "sources": [],
+    "scrapeWithAxios": false,
+    "dynamic": false,
+    "puppeteerConfig": {}
+  }
+}

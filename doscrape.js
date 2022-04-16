@@ -3,6 +3,7 @@
 import scrape from 'website-scraper';
 import { existsSync, rmSync, readFileSync, writeFileSync } from 'fs';
 import { JSDOM } from 'jsdom';
+import { axiosScrape } from './axiosscrape.js';
 
 /**
  * get url info of the source file
@@ -135,6 +136,9 @@ function doScrape (options) {
     })
 
     .then(() => {
+      if (options.scrapeWithAxios) {
+        return axiosScrape(options);
+      }
       return scrape(options);
     })
 

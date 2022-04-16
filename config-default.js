@@ -8,6 +8,9 @@ const defaultConfig = {
   // destination directory
   "directory": "./scrape-result",
 
+  // scrape using axios instead of 'website-scraper'
+  "scrapeWithAxios": false,
+
   // types of files to save (default none)
   "sources": [
     // {selector: 'img', attr: 'src'},
