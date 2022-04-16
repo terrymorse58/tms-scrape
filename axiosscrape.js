@@ -2,21 +2,18 @@
 
 import axios from 'axios';
 import { mkdirSync, writeFileSync } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 /**
  * scrape a single file using axios
  * @param {Object} options
- @returns {Promise<any>} */
+ * @returns {Promise<any>}
+ */
 function axiosScrape (options) {
   console.log(`axiosScrape()`);
 
   const [urlStr] = options.urls;
   const {directory, defaultFileName} = options;
-  const writePath = path.join(__dirname, directory) +
+  const writePath = directory +
     ((directory.slice(-1) !== '/') ? '/' : '') +
     (defaultFileName || 'index.html');
 
