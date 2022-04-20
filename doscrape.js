@@ -4,6 +4,8 @@ import { existsSync, rmSync, readFileSync, mkdirSync, writeFileSync } from 'fs';
 import { JSDOM } from 'jsdom';
 import { axiosScrape } from './axiosscrape.js';
 import { websiteScraper } from './webscraper.js';
+import { defaultConfig } from './config-default.js';
+import PuppeteerPlugin from 'website-scraper-puppeteer';
 
 /**
  * get url info of the source file
@@ -123,13 +125,33 @@ function showTimer () {
 }
 
 /**
- * scrape a single page
+ * create a complete scrape options configuration
  * @param {Object} options
+ * @returns {Object}
+ */
+function setConfig (options) {
+  let config = Object.assign({}, defaultConfig);
+  config = Object.assign(config, options);
+  if (config.dynamic) {
+    const plugin = new PuppeteerPlugin(config.puppeteerConfig);
+    config.plugins = [plugin];
+  }
+
+  // console.log(`doscrape.js setConfig config:`, config);
+
+  return config;
+}
+
+/**
+ * scrape a single page
+ * @param {Object} options - scrapeConfig options
  * @return {Promise<{directory: string, html: string}>}
  */
 function doScrape (options) {
 
   console.log(`doScrape()`);
+
+  const config = setConfig(options);
 
   const {
       directory,
@@ -140,7 +162,7 @@ function doScrape (options) {
       removeScripts,
       convertRelativeRefs,
       saveToFile
-    } = options,
+    } = config,
     htmlPath = directory +
       (directory.slice(-1) !== '/' ? '/index.html' : 'index.html');
 
@@ -163,8 +185,8 @@ function doScrape (options) {
 
       // return scraped html text
       return (scrapeWithAxios) ?
-        axiosScrape(options) :
-        websiteScraper(options);
+        axiosScrape(config) :
+        websiteScraper(config);
     })
 
     .then(html => {

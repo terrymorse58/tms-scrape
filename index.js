@@ -9,45 +9,46 @@
  *   [--config <config_file>]
  */
 
-import PuppeteerPlugin from 'website-scraper-puppeteer';
 import { readFileSync } from 'fs';
 import { doScrape } from './doscrape.js';
-import { defaultConfig } from './config-default.js';
 
 const DEFAULT_TIMEOUT = 300_000;
-
-let config = Object.assign({}, defaultConfig);
 
 // console.log(`scrapeit argv:`, process.argv);
 
 const args = process.argv.slice(2);
 
+let scrapeConfig = {};
+
+// --config (optional)
 const iFlagConfig = args.indexOf('--config');
 if (iFlagConfig !== -1) {
   const configPath = args[iFlagConfig + 1];
   const configJSON = readFileSync(configPath, {encoding: 'utf8'});
-  const confUser = JSON.parse(configJSON);
-  const {scrapeConfig} = confUser;
-  if (!scrapeConfig) {
+  let configUser = { scrapeConfig };
+  configUser = JSON.parse(configJSON);
+  if (!configUser.hasOwnProperty('scrapeConfig')) {
     console.error(`Error: Config file '${configPath}'` +
       ` is missing required 'scrapeConfig' parameter.`);
     process.exit(0);
   }
-  config = Object.assign(config, scrapeConfig);
+  scrapeConfig = configUser.scrapeConfig;
 }
 
+// --url (required)
 const iFlagUrl = args.indexOf('--url');
 if (iFlagUrl !== -1) {
   const url = args[iFlagUrl + 1];
-  config.urls = [url];
+  scrapeConfig.urls = [url];
 }
 
+// --dest (required)
 const iFlagDest = args.indexOf('--dest');
 if (iFlagDest !== -1) {
-  config.directory = args[iFlagDest + 1];
+  scrapeConfig.directory = args[iFlagDest + 1];
 }
 
-if (!config.urls.length || !config.directory) {
+if (!scrapeConfig.urls || !scrapeConfig.directory) {
   console.error('Usage: scrape ' +
     '--url <source_url> ' +
     '--dest <destination_directory> ' +
@@ -55,15 +56,7 @@ if (!config.urls.length || !config.directory) {
   process.exit(0);
 }
 
-if (config.dynamic) {
-  const plugin = new PuppeteerPlugin(config.puppeteerConfig);
-  config.plugins = [plugin];
-}
-
-process.stdout.write(
-  `  source: ${config.urls}
-  destination: ${config.directory}\n`
-);
+// console.log(`index.js scrapeConfig:`, scrapeConfig);
 
 const startTime = Date.now();
 
@@ -73,12 +66,12 @@ const spinner = setInterval(() => {
 }, 1000);
 
 const timeoutID = setTimeout(() => {
-  console.error(`\nscraping timed out, check '${config.directory}' for any output.`);
+  console.error(`\nscraping timed out, check '${scrapeConfig.directory}' for any output.`);
   clearTimeout(timeoutID);
   process.exit(0);
 }, DEFAULT_TIMEOUT);
 
-doScrape(config)
+doScrape(scrapeConfig)
   .then(({directory, html}) => {
     clearInterval(spinner);
     clearTimeout(timeoutID);
