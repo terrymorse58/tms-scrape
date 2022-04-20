@@ -2,7 +2,7 @@
   "scrapeConfig": {
     "directory": "test",
     "sources": [],
-    "scrapeWithAxios": false,
+    "scrapeWithAxios": true,
     "dynamic": false,
     "puppeteerConfig": {}
   }

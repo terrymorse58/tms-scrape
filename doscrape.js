@@ -1,9 +1,9 @@
 // scrape a single URL and store results locally
 
-import scrape from 'website-scraper';
-import { existsSync, rmSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, rmSync, readFileSync, mkdirSync, writeFileSync } from 'fs';
 import { JSDOM } from 'jsdom';
 import { axiosScrape } from './axiosscrape.js';
+import { websiteScraper } from './webscraper.js';
 
 /**
  * get url info of the source file
@@ -111,6 +111,17 @@ function removeAllScripts (document) {
   });
 }
 
+let startTime, elapsedTime;
+function startTimer () {
+  startTime = Date.now();
+}
+function showTimer () {
+  const now = Date.now();
+  elapsedTime = ((now - startTime) / 1000).toFixed(3);
+  startTimer();
+  return elapsedTime;
+}
+
 /**
  * scrape a single page
  * @param {Object} options
@@ -118,79 +129,116 @@ function removeAllScripts (document) {
  */
 function doScrape (options) {
 
-  const {directory, urls} = options,
+  console.log(`doScrape()`);
+
+  const {
+      directory,
+      urls,
+      scrapeWithAxios,
+      removeLinkEls,
+      removeStyles,
+      removeScripts,
+      convertRelativeRefs,
+      saveToFile
+    } = options,
     htmlPath = directory +
       (directory.slice(-1) !== '/' ? '/index.html' : 'index.html');
+
+  console.log(`  doScrape scraper is '${
+    scrapeWithAxios ? 'axios' : 'website-scraper'
+  }'`);
 
   return new Promise(resolve => resolve())
 
     .then(() => {
+      startTimer();
       // delete target directory if it exists
-      if (!existsSync(directory)) { return; }
-
-      // console.log(`deleting existing directory: ${directory}`);
-      return rmSync(directory, {
-        maxRetries: 5,
-        recursive: true
-      });
-    })
-
-    .then(() => {
-      if (options.scrapeWithAxios) {
-        return axiosScrape(options);
-      }
-      return scrape(options);
-    })
-
-    .then(() => {
-      // add URL info to <head>
-      const url = urls[0],
-        urlInfo = getURLInfo(url),
-        document = readHtmlFile(htmlPath);
-
-      insertURLInfo(document, urlInfo);
-
-      // remove all scripts
-      if (options.removeScripts) {
-        removeAllScripts(document);
+      if (existsSync(directory)) {
+        // console.log(`deleting existing directory: ${directory}`);
+        rmSync(directory, {
+          maxRetries: 5,
+          recursive: true
+        });
       }
 
-      // convert relative references to absolute
-      if (options.convertRelativeRefs) {
+      // return scraped html text
+      return (scrapeWithAxios) ?
+        axiosScrape(options) :
+        websiteScraper(options);
+    })
+
+    .then(html => {
+      console.log(`  doScrape scraper complete in ${showTimer()} secs`);
+
+      // optionally strip certain elements
+      if (removeLinkEls) {
+        html = html.replace(
+          /<link (.*?)>/sg,
+          ''
+        );
+      }
+      if (removeStyles) {
+        html = html.replace(
+          /<style(.*?)<\/style>/sg,
+          ''
+        );
+        html = html.replace(
+          /style="(.*?)"/sg,
+          ''
+        );
+      }
+      if (removeScripts) {
+        html = html.replace(
+          /<script(.*?)<\/script>/sg,
+          ''
+        );
+      }
+
+      console.log(`  doScrape remove elements complete in ${showTimer()} secs`);
+
+      const document = new JSDOM(html).window.document;
+
+      console.log(`  doScrape create document complete in ${showTimer()} secs`);
+
+      // optionally convert relative urls
+      if (convertRelativeRefs) {
+        const urlInfo = getURLInfo(urls[0]);
         relativeRefsToAbsolute(document, urlInfo);
       }
 
-      // delete destination directory if requested
-      if (!options.saveToFile) {
-        rmSync(directory, {
-          force: true,
+      console.log(`  doScrape convertRelativeRefs complete in ${showTimer()} secs`);
+
+      if (saveToFile) {
+        // write updated HTML to file
+        mkdirSync(directory, {
           recursive: true,
-          maxRetries: 4
-        })
-      }
-
-      return document;
-    })
-
-    .then(document => {
-      // write modified HTML document to file
-      if (options.saveToFile) {
+          mode: 0o777
+        });
         writeFileSync(
           htmlPath,
           document.documentElement.outerHTML,
           {encoding: 'utf8'}
         );
+      } else {
+        // delete destination directory
+        rmSync(directory, {
+          force: true,
+          recursive: true,
+          maxRetries: 4
+        });
       }
-      return document;
-    })
 
-    .then(document => {
+      console.log(`  doScrape file saves complete in ${showTimer()} secs`);
+
       return {
         directory,
         html: document.documentElement.outerHTML
       };
-    });
+    })
 
+    .catch(err => {
+      console.error(`doScrape Error:`, err);
+    });
 }
 
 export {

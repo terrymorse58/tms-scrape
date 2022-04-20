@@ -2,7 +2,7 @@
 
 const defaultConfig = {
 
-  // urls to scrape
+  // urls to scrape (required)
   "urls": [],
 
   // destination directory
@@ -26,6 +26,12 @@ const defaultConfig = {
 
   // how deep in hierarchy to search (1: files referenced by source file)
   "maxDepth": 1,
+
+  // remove all link elements
+  "removeLinkEls": true,
+
+  // remove all style elements
+  "removeStyles": true,
 
   // remove all scripts from HTML file
   "removeScripts": true,
