@@ -114,14 +114,20 @@ function removeAllScripts (document) {
 }
 
 let startTime, elapsedTime;
+
 function startTimer () {
   startTime = Date.now();
 }
-function showTimer () {
+
+/**
+ * get elapsed time and reset timer
+ * @return {number} seconds
+ */
+function getElapsedTime () {
   const now = Date.now();
   elapsedTime = ((now - startTime) / 1000).toFixed(3);
   startTimer();
-  return elapsedTime;
+  return Number(elapsedTime);
 }
 
 /**
@@ -145,11 +151,11 @@ function setConfig (options) {
 /**
  * scrape a single page
  * @param {Object} options - scrapeConfig options
- * @return {Promise<{directory: string, html: string}>}
+ * @return {Promise<{scraperName: string, directory: string, htmlPath: string, html: string}>}
  */
 function doScrape (options) {
 
-  console.log(`doScrape()`);
+  // console.log(`tms-scrape doScrape()`);
 
   const config = setConfig(options);
 
@@ -164,16 +170,14 @@ function doScrape (options) {
       saveToFile
     } = config,
     htmlPath = directory +
-      (directory.slice(-1) !== '/' ? '/index.html' : 'index.html');
+      (directory.slice(-1) !== '/' ? '/index.html' : 'index.html'),
+    scraperName = scrapeWithAxios ? 'axios' : 'website-scraper';
 
-  console.log(`  doScrape scraper is '${
-    scrapeWithAxios ? 'axios' : 'website-scraper'
-  }'`);
+  startTimer();
 
   return new Promise(resolve => resolve())
 
     .then(() => {
-      startTimer();
       // delete target directory if it exists
       if (existsSync(directory)) {
         // console.log(`deleting existing directory: ${directory}`);
@@ -190,7 +194,7 @@ function doScrape (options) {
     })
 
     .then(html => {
-      console.log(`  doScrape scraper complete in ${showTimer()} secs`);
+      // console.log(`  doScrape scraper complete in ${getElapsedTime()} secs`);
 
       // optionally strip certain elements
       if (removeLinkEls) {
@@ -216,19 +220,13 @@ function doScrape (options) {
         );
       }
 
-      console.log(`  doScrape remove elements complete in ${showTimer()} secs`);
-
       const document = new JSDOM(html).window.document;
-
-      console.log(`  doScrape create document complete in ${showTimer()} secs`);
 
       // optionally convert relative urls
       if (convertRelativeRefs) {
         const urlInfo = getURLInfo(urls[0]);
         relativeRefsToAbsolute(document, urlInfo);
       }
-
-      console.log(`  doScrape convertRelativeRefs complete in ${showTimer()} secs`);
 
       if (saveToFile) {
         // write updated HTML to file
@@ -250,10 +248,13 @@ function doScrape (options) {
         });
       }
 
-      console.log(`  doScrape file saves complete in ${showTimer()} secs`);
+      // console.log(`  tms-scrape complete in ${getElapsedTime()} secs`);
 
       return {
+        scraperName,
         directory,
+        htmlPath,
+        elapsedTime: getElapsedTime(),
         html: document.documentElement.outerHTML
       };
     })

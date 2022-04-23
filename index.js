@@ -30,7 +30,7 @@ if (iFlagConfig !== -1) {
   if (!configUser.hasOwnProperty('scrapeConfig')) {
     console.error(`Error: Config file '${configPath}'` +
       ` is missing required 'scrapeConfig' parameter.`);
-    process.exit(0);
+    process.exit(1);
   }
   scrapeConfig = configUser.scrapeConfig;
 }
@@ -53,7 +53,7 @@ if (!scrapeConfig.urls || !scrapeConfig.directory) {
     '--url <source_url> ' +
     '--dest <destination_directory> ' +
     '[--config <config_file>]');
-  process.exit(0);
+  process.exit(1);
 }
 
 // console.log(`index.js scrapeConfig:`, scrapeConfig);
@@ -68,14 +68,24 @@ const spinner = setInterval(() => {
 const timeoutID = setTimeout(() => {
   console.error(`\nscraping timed out, check '${scrapeConfig.directory}' for any output.`);
   clearTimeout(timeoutID);
-  process.exit(0);
+  process.exit(1);
 }, DEFAULT_TIMEOUT);
 
 doScrape(scrapeConfig)
-  .then(({directory, html}) => {
+  .then(({
+           scraperName,
+           directory,
+           htmlPath,
+           elapsedTime,
+           html
+  }) => {
     clearInterval(spinner);
     clearTimeout(timeoutID);
-    process.stdout.write(`\nscrape completed, results stored at '${directory}'\n`);
+    process.stdout.write(
+      `\nscraped using '${scraperName}' in ${elapsedTime} seconds` +
+      `\nresults stored at '${htmlPath}'` +
+      `\nfile size: ${html.length.toLocaleString()} bytes\n`
+    );
   })
   .catch(err => {
     console.error(`scrape error:`, err);
