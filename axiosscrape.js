@@ -37,6 +37,7 @@ function axiosScrape (options) {
   <p>An error occured while trying to communicate with ${urlString}.</p>
 </div>
 </body>
+</html>
 `;
     });
 }

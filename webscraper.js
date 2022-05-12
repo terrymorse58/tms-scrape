@@ -11,8 +11,15 @@ import { readFileSync } from 'fs';
 function websiteScraper (options) {
 
   const {directory} = options;
+  let timeoutID;
 
   return new Promise(resolve => resolve())
+
+    .then(() => {
+      timeoutID = setTimeout(() => {
+        throw `scrape timed out`;
+      }, 15_000);
+    })
 
     .then(() => {
       return scrape(options);
@@ -20,6 +27,8 @@ function websiteScraper (options) {
 
     .then(() => {
       // read the html file, return the html text
+      clearTimeout(timeoutID);
+      timeoutID = undefined;
       const htmlPath = directory +
         (directory.slice(-1) !== '/' ? '/index.html' : 'index.html')
       return readFileSync(htmlPath, {encoding: 'utf8'});
@@ -27,6 +36,17 @@ function websiteScraper (options) {
 
     .catch(err => {
       console.error(`websiteScraper Error:`, err);
+      console.log(`websiteScraper error, returning generic error page`);
+      return  `
+<html lang="en"><head><title>Error Occurred</title></head>
+<body>
+<div id="readuce-error">
+  <h1>Readuce Error</h1>
+  <p>An error occured while trying to communicate with ${directory}.</p>
+</div>
+</body>
+</html>      
+      `;
     });
 }
 

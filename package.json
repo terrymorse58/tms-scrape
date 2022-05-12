@@ -1,6 +1,6 @@
 {
   "name": "tms-scrape",
-  "version": "0.4.18",
+  "version": "0.4.19",
   "description": "scrape a single dynamic web page with JavaScript or from command line",
   "main": "doscrape.js",
   "type": "module",
