@@ -11,24 +11,19 @@ import { readFileSync } from 'fs';
 function websiteScraper (options) {
 
   const {directory} = options;
-  let timeoutID;
 
   return new Promise(resolve => resolve())
 
     .then(() => {
-      timeoutID = setTimeout(() => {
+      return setTimeout(() => {
         throw `scrape timed out`;
       }, 15_000);
     })
 
-    .then(() => {
-      return scrape(options);
-    })
-
-    .then(() => {
+    .then(timeoutID => {
+      scrape(options);
       // read the html file, return the html text
       clearTimeout(timeoutID);
-      timeoutID = undefined;
       const htmlPath = directory +
         (directory.slice(-1) !== '/' ? '/index.html' : 'index.html')
       return readFileSync(htmlPath, {encoding: 'utf8'});
