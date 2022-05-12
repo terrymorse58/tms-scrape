@@ -28,6 +28,14 @@ function axiosScrape (options) {
 
     .catch(err => {
       console.error(`  axiosScrape Error:`, err);
+      console.log(`An error occured in axios.get, returning generic error message`);
+      return `
+<html><head><title>Error Occurred</title></head>
+<body>
+<h1>Error</h1>
+<p>An error occured while trying to communicate with ${urlString}.</p>
+</body>
+`;
     });
 }
 
