@@ -32,8 +32,10 @@ function axiosScrape (options) {
       return `
 <html><head><title>Error Occurred</title></head>
 <body>
-<h1>Error</h1>
-<p>An error occured while trying to communicate with ${urlString}.</p>
+<div id="readuce-error">
+  <h1>Readuce Error</h1>
+  <p>An error occured while trying to communicate with ${urlString}.</p>
+</div>
 </body>
 `;
     });
