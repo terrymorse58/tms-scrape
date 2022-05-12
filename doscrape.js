@@ -155,7 +155,7 @@ function setConfig (options) {
  */
 function doScrape (options) {
 
-  console.log(`tms-scrape doScrape()`);
+  // console.log(`tms-scrape doScrape()`);
 
   const config = setConfig(options);
 
@@ -194,7 +194,7 @@ function doScrape (options) {
     })
 
     .then(html => {
-      console.log(`  doScrape scraper complete in ${getElapsedTime()} secs`);
+      // console.log(`  doScrape scraper complete in ${getElapsedTime()} secs`);
 
       // optionally strip certain elements
       if (removeLinkEls) {
@@ -248,7 +248,7 @@ function doScrape (options) {
         });
       }
 
-      console.log(`  tms-scrape complete in ${getElapsedTime()} secs`);
+      // console.log(`  tms-scrape complete in ${getElapsedTime()} secs`);
 
       return {
         scraperName,
