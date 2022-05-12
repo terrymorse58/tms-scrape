@@ -1,0 +1,7 @@
+{
+  "scrapeConfig": {
+    "directory": "test1",
+    "scrapeWithAxios": false,
+    "scrapeWithCurl": true
+  }
+}

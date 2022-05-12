@@ -6,6 +6,7 @@ import { axiosScrape } from './axiosscrape.js';
 import { websiteScraper } from './webscraper.js';
 import { defaultConfig } from './config-default.js';
 import PuppeteerPlugin from 'website-scraper-puppeteer';
+import { curlScrape } from './curlscrape.js';
 
 /**
  * get url info of the source file
@@ -149,6 +150,18 @@ function setConfig (options) {
 }
 
 /**
+ * determine name of selected website scraper
+ * @param {Boolean} scrapeWithAxios
+ * @param {Boolean} scrapeWithCurl
+ * @return {string}
+ */
+function getScraperName (scrapeWithAxios, scrapeWithCurl) {
+  if (scrapeWithAxios) { return 'axios'}
+  if (scrapeWithCurl) { return 'curl'}
+  return 'website-scraper';
+}
+
+/**
  * scrape a single page
  * @param {Object} options - scrapeConfig options
  * @return {Promise<{scraperName: string, directory: string, htmlPath: string, html: string}>}
@@ -163,6 +176,7 @@ function doScrape (options) {
       directory,
       urls,
       scrapeWithAxios,
+      scrapeWithCurl,
       removeLinkEls,
       removeStyles,
       removeScripts,
@@ -171,7 +185,7 @@ function doScrape (options) {
     } = config,
     htmlPath = directory +
       (directory.slice(-1) !== '/' ? '/index.html' : 'index.html'),
-    scraperName = scrapeWithAxios ? 'axios' : 'website-scraper';
+    scraperName = getScraperName(scrapeWithAxios, scrapeWithCurl);
 
   startTimer();
 
@@ -188,9 +202,9 @@ function doScrape (options) {
       }
 
       // return scraped html text
-      return (scrapeWithAxios) ?
-        axiosScrape(config) :
-        websiteScraper(config);
+      if (scrapeWithAxios) { return axiosScrape(config); }
+      if (scrapeWithCurl) { return curlScrape(urls[0]);}
+      return websiteScraper(config);
     })
 
     .then(html => {
@@ -222,7 +236,7 @@ function doScrape (options) {
 
       const document = new JSDOM(html).window.document;
 
-      // optionally convert relative urls
+      // optionally convert relative urls in document
       if (convertRelativeRefs) {
         const urlInfo = getURLInfo(urls[0]);
         relativeRefsToAbsolute(document, urlInfo);
