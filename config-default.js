@@ -11,6 +11,15 @@ const defaultConfig = {
   // scrape using axios
   "scrapeWithAxios": false,
 
+  "httpHeaders": null,
+
+  // some headers to try for fussy hosts (edit 'www.example.com')
+  // "httpHeaders": {
+  //   "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15",
+  //   "Cache-Control": "no-cache",
+  //   "Host": "www.example.com"
+  // },
+
   // scrape using curl
   "scrapeWithCurl": false,
 

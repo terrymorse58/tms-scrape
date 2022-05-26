@@ -1,0 +1,13 @@
+{
+  "scrapeConfig": {
+    "directory": "test6",
+    "scrapeWithAxios": true,
+     "httpHeaders": {
+       "User-Agent": "PostmanRuntime/7.29.0",
+       "Cache-Control": "no-cache",
+       "Host": "www.bloomberg.com",
+       "Cookie": "exp_pref=AMER; seen_uk=1"
+     },
+    "removeScripts": false
+  }
+}

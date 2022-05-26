@@ -5,17 +5,26 @@ import { mkdirSync, writeFileSync } from 'fs';
 
 /**
  * scrape a single file using axios
- * @param {Object} options
+ * @param {String[]} urls
+ * @param {Object} [httpHeaders]
  * @returns {Promise<string>} html text
  */
-function axiosScrape (options) {
+function axiosScrape ({urls, httpHeaders = undefined}) {
   // console.log(`axiosScrape()`);
 
-  const [urlString] = options.urls;
+  const [urlString] = urls;
 
-  // console.log(`  axiosScrape url: ${urlString}`);
+  // console.log(`  axiosScrape urls: `, urls);
+  // console.log(`    httpHeaders:`, httpHeaders);
 
-  return axios.get(urlString, {timeout: 15_000})
+  const axiosConfig = {
+    timeout: 15_000
+  };
+  if (httpHeaders) {
+    axiosConfig.headers = httpHeaders;
+  }
+
+  return axios.get(urlString, axiosConfig)
 
     .then(res => {
 
