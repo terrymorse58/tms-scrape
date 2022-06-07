@@ -3,18 +3,43 @@
 
 import { exec } from 'child_process';
 
+/*
+  TODO allow the use of httpHeaders config to send custom headers
+
+  Example:
+
+    curl --header "X-First-Name: Joe" http://example.com/
+*/
+
 /**
  * use curl to scrape the contents of a document
  * @param url
+ * @param {string} [cookie]
+ * @param {Boolean} [debug]
  * @return {Promise<string>} - contents of the document
  */
-function curlScrape (url) {
-  // console.log('curlScrape url:', url);
+function curlScrape (url, {
+  cookie = undefined,
+  debug = false
+}) {
+
+  if (debug) {
+    console.log(`curlScrape url: ${url}, cookie: ${cookie}`);
+  }
 
   return new Promise((resolve, reject) => {
 
+    let command = `curl ${url}`;
+    if (cookie) {
+      command += ` --cookie "${cookie}"`;
+    }
+
+    if (debug) {
+      console.log(`  curlScrape command: '${command}'`);
+    }
+
     exec(
-      `curl ${url}`,
+      command,
       function (err, stdout, stderr) {
 
         if (err) {
@@ -22,7 +47,10 @@ function curlScrape (url) {
           reject(err);
         }
 
-        // console.log(`curlScrape ${url} success`);
+        if (debug) {
+          console.log(`  curlScrape ${url} success`);
+        }
+
         resolve(stdout);
       }
     );

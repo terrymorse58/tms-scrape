@@ -1,7 +1,9 @@
 {
+  "comment": "test scraping of bloomberg page - requires http headers",
   "scrapeConfig": {
     "directory": "test6",
     "scrapeWithAxios": true,
+    "withCredentials": true,
      "httpHeaders": {
        "User-Agent": "PostmanRuntime/7.29.0",
        "Cache-Control": "no-cache",

@@ -1,0 +1,10 @@
+{
+  "comment": "test of website-scraper",
+  "scrapeConfig": {
+    "sources": [],
+    "subdirectories": [],
+    "maxDepth": 0,
+    "ignoreErrors": true,
+    "dynamic": false
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "tms-scrape",
-  "version": "0.4.22",
+  "version": "0.4.23",
   "description": "scrape a single dynamic web page with JavaScript or from command line",
   "main": "doscrape.js",
   "type": "module",
@@ -9,12 +9,13 @@
   },
   "scripts": {
     "scrape": "./index.js",
-    "test1": "./index.js --url https://terrymorse.com/packages/index.html --config test1-config.json --dest test1",
-    "test2": "./index.js --url https://www.iana.org/domains/reserved --dest test2",
-    "test3": "./index.js --url  https://www.washingtonpost.com/world/2022/04/13/russia-ukraine-war-news-live-updates/ --dest test3",
-    "test4": "./index.js --url  https://www.iana.org/domains/reserved --config test4-config.json --dest test4",
-    "test5": "./index.js --url  https://www.washingtonpost.com/health/2022/04/18/long-covid-medical-care-challenge/ --config test5-config.json --dest test5",
-    "test6": "./index.js --url  https://www.bloomberg.com/news/articles/2022-05-25/biden-demands-us-stand-up-to-gun-makers-after-texas-massacre?srnd=premium --config test6-config.json --dest test6"
+    "test1": "./index.js --url https://terrymorse.com/packages/index.html --config config/test1.json --dest test/test1",
+    "test2": "./index.js --url https://www.iana.org/domains/reserved --dest test/test2",
+    "test3": "./index.js --url  https://www.washingtonpost.com/world/2022/04/13/russia-ukraine-war-news-live-updates/ --config config/test3.json --dest test/test3",
+    "test4": "./index.js --url  https://www.iana.org/domains/reserved --config config/test4.json --dest test/test4",
+    "test5": "./index.js --url  https://www.washingtonpost.com/health/2022/04/18/long-covid-medical-care-challenge/ --config config/test5.json --dest test/test5",
+    "test6": "./index.js --url  https://www.bloomberg.com/news/articles/2022-05-25/biden-demands-us-stand-up-to-gun-makers-after-texas-massacre?srnd=premium --config config/test6.json --dest test/test6",
+    "test7": "./index.js --url  https://www.science.org/content/article/racially-biased-devices-caused-delayed-treatment-black-covid-19-patients --config config/test7.json --dest test/test7"
   },
   "author": "Terry Morse",
   "license": "MIT",

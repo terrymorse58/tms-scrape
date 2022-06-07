@@ -181,7 +181,9 @@ function doScrape (options) {
       removeStyles,
       removeScripts,
       convertRelativeRefs,
-      saveToFile
+      saveToFile,
+      cookie,
+      debug
     } = config,
     htmlPath = directory +
       (directory.slice(-1) !== '/' ? '/index.html' : 'index.html'),
@@ -203,7 +205,9 @@ function doScrape (options) {
 
       // return scraped html text
       if (scrapeWithAxios) { return axiosScrape(config); }
-      if (scrapeWithCurl) { return curlScrape(urls[0]);}
+      if (scrapeWithCurl) {
+        return curlScrape(urls[0], {cookie, debug});
+      }
       return websiteScraper(config);
     })
 

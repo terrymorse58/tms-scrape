@@ -1,0 +1,7 @@
+{
+  "comment": "test scraping of science.org page - requires cookies",
+  "scrapeConfig": {
+    "scrapeWithCurl": true,
+    "cookie": "cookiePolicy=iaccept"
+  }
+}
